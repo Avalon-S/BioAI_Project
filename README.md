@@ -11,7 +11,7 @@
 4. [Results](#results)
 5. [Visualization](#visualization)
 6. [Usage](#usage)
-7. [Folder Structure](#folder-structure)
+7. [Project Structure](#project-structure)
 8. [License](#license)
 
 ---
@@ -66,8 +66,8 @@ The heuristic NSGA-II demonstrates better diversity compared to the standard ver
 | **DIVERSIFIED_INIT_PROB** | - Higher initial solution quality<br>- Reduced randomness in early iterations | - Lower solution diversity<br>- May reduce exploration of diverse areas | - Higher solution diversity<br>- Improved exploration capabilities | - Lower initial solution quality |
 | **LOCAL_SEARCH_PROB**    | - Improved local solution quality<br>- Pushes solutions towards Pareto front | - Lower solution diversity<br>- Higher computational cost<br>- May lead to overfitting local areas | - Higher diversity<br>- Better exploration of search space | - Lower global exploration<br>- May leave potential solutions unexplored |
 
-div align="center">
-  <img src="asset/running_output.jpg" alt="running_output.jpg" style="width:80%;"/>
+<div align="center">
+  <img src="asset/running_output.jpg" alt="running_output.jpg" style="width:70%;"/>
   <p><em>Running Output</em></p>
 </div>
 
@@ -87,8 +87,6 @@ div align="center">
   <img src="result/Brandimarte/Mk01/adv_schedule_1.png" alt="adv_schedule_1.png" style="width:80%;"/>
   <p><em>Heuristic NSGA-II Job Scheduling (Mk01)</em></p>
 </div>
-
-
 
 <div align="center">
   <img src="result/Brandimarte/Mk01/comparison_nsga2_variants.png" alt="comparison_nsga2_variants.png" style="width:80%;"/>
@@ -137,7 +135,7 @@ python BioAI_Project/remove.py # Remove the result and all .ipynb_checkpoints
 
 ---
 
-## Folder Structure
+## Project Structure
 
 ```python
 BioAI_Project
