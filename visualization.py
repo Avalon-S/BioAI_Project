@@ -2,7 +2,10 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 
-def visualize_schedule(solution, processing_times, num_machines):
+def visualize_schedule(solution, processing_times, num_machines, makespan=None, load_balance=None, save_path=None):
+    """
+    Generate Job Scheduling Visualization plots for Standard NSGA-II and Advanced NSGA-II for a given dataset.
+    """
     fig, ax = plt.subplots(figsize=(12, 8))
     colors = plt.cm.tab20(np.linspace(0, 1, len(solution)))
 
@@ -11,8 +14,10 @@ def visualize_schedule(solution, processing_times, num_machines):
         for op_idx, machine_idx in enumerate(job_schedule):
             op_time = processing_times[job_idx, op_idx, machine_idx]
             if np.isfinite(op_time):
-                ax.barh(y=machine_idx, width=op_time, left=start_time, height=0.8,
-                        color=colors[job_idx], label=f'Job {job_idx + 1}' if op_idx == 0 else "")
+                ax.barh(
+                    y=machine_idx, width=op_time, left=start_time, height=0.8,
+                    color=colors[job_idx], label=f'Job {job_idx + 1}' if op_idx == 0 else ""
+                )
                 start_time += op_time
 
     ax.set_yticks(range(num_machines))
@@ -20,14 +25,22 @@ def visualize_schedule(solution, processing_times, num_machines):
     ax.set_xlabel("Time")
     ax.set_ylabel("Machines")
     ax.legend(loc="upper right", ncol=2, fontsize="small")
-    plt.title("Job Scheduling Visualization")
-    plt.show()
 
-    
+    # Dynamically update title
+    title = "Job Scheduling Visualization"
+    if makespan is not None and load_balance is not None:
+        title += f" (Makespan: {makespan:.1f}, Load Balance: {load_balance:.1f})"
+    plt.title(title)
+
+    # Save plots
+    if save_path:
+        plt.savefig(save_path)
+    plt.close()
+
+
 def generate_performance_plots(result_folder, dataset_name):
     """
-    Generate line plots comparing Standard NSGA-II and Advanced NSGA-II 
-    performance metrics for a given dataset.
+    Generate line plots comparing Standard NSGA-II and Advanced NSGA-II performance metrics for a given dataset.
     """
     dataset_folder = os.path.join(result_folder, dataset_name)
     if not os.path.exists(dataset_folder):
@@ -55,7 +68,7 @@ def generate_performance_plots(result_folder, dataset_name):
             with open(metrics_file, "r", encoding="utf-8") as file:
                 lines = file.readlines()
                 
-                # Ensure lines have the expected content
+                # Extract metrics from the file
                 runtime_std = float(lines[3].split(":")[1].strip()) if len(lines) > 3 else 0.0
                 hv_std = float(lines[4].split(":")[1].strip()) if len(lines) > 4 else 0.0
                 div_std = float(lines[5].split(":")[1].strip()) if len(lines) > 5 else 0.0
@@ -63,7 +76,7 @@ def generate_performance_plots(result_folder, dataset_name):
                 hv_adv = float(lines[9].split(":")[1].strip()) if len(lines) > 9 else 0.0
                 div_adv = float(lines[10].split(":")[1].strip()) if len(lines) > 10 else 0.0
 
-                # Append parsed values
+                # Append values to respective lists
                 data_names.append(data_folder)
                 standard_runtime.append(runtime_std)
                 standard_hv.append(hv_std)
@@ -75,7 +88,6 @@ def generate_performance_plots(result_folder, dataset_name):
         except (IndexError, ValueError) as e:
             print(f"Error parsing file {metrics_file}: {e}")
 
-    # Ensure all lists have the same length
     if not (len(data_names) == len(standard_runtime) == len(advanced_runtime)):
         print(f"Error: Data mismatch in dataset {dataset_name}. Skipping plot generation.")
         return
@@ -83,10 +95,10 @@ def generate_performance_plots(result_folder, dataset_name):
     output_folder = os.path.join(result_folder, dataset_name)
     os.makedirs(output_folder, exist_ok=True)
 
-    # Plot Runtime
+    # Runtime Plot
     plt.figure(figsize=(10, 6))
-    plt.plot(data_names, standard_runtime, marker='o', label='Standard NSGA-II')
-    plt.plot(data_names, advanced_runtime, marker='s', label='Advanced NSGA-II')
+    plt.plot(data_names, standard_runtime, marker='o', label='Standard NSGA-II', linestyle='--')
+    plt.plot(data_names, advanced_runtime, marker='s', label='Advanced NSGA-II', linestyle='-')
     plt.xticks(rotation=45)
     plt.xlabel("Data Name")
     plt.ylabel("Runtime (seconds)")
@@ -96,10 +108,10 @@ def generate_performance_plots(result_folder, dataset_name):
     plt.savefig(os.path.join(output_folder, "runtime_comparison.png"))
     plt.close()
 
-    # Plot Hypervolume
+    # Hypervolume Plot
     plt.figure(figsize=(10, 6))
-    plt.plot(data_names, standard_hv, marker='o', label='Standard NSGA-II')
-    plt.plot(data_names, advanced_hv, marker='s', label='Advanced NSGA-II')
+    plt.plot(data_names, standard_hv, marker='o', label='Standard NSGA-II', linestyle='--')
+    plt.plot(data_names, advanced_hv, marker='s', label='Advanced NSGA-II', linestyle='-')
     plt.xticks(rotation=45)
     plt.xlabel("Data Name")
     plt.ylabel("Hypervolume")
@@ -109,10 +121,10 @@ def generate_performance_plots(result_folder, dataset_name):
     plt.savefig(os.path.join(output_folder, "hypervolume_comparison.png"))
     plt.close()
 
-    # Plot Diversity
+    # Diversity Plot
     plt.figure(figsize=(10, 6))
-    plt.plot(data_names, standard_div, marker='o', label='Standard NSGA-II')
-    plt.plot(data_names, advanced_div, marker='s', label='Advanced NSGA-II')
+    plt.plot(data_names, standard_div, marker='o', label='Standard NSGA-II', linestyle='--')
+    plt.plot(data_names, advanced_div, marker='s', label='Advanced NSGA-II', linestyle='-')
     plt.xticks(rotation=45)
     plt.xlabel("Data Name")
     plt.ylabel("Diversity")

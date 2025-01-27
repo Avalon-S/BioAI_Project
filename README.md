@@ -1,4 +1,5 @@
 # BioAI_Project
+
 ## Heuristic NSGA-II for Flexible Job Shop Scheduling Problems
 
 ---
@@ -52,6 +53,8 @@ The proposed approach integrates heuristic strategies and traditional NSGA-II to
 | **Metrics**              | - Hypervolume (HV)<br>- Diversity                                          |
 | **Supported Datasets**   | - Barnes<br>- Brandimarte<br>- Dauzere<br>- Other datasets with the same structure                             |
 | **Visualization**        | - Gantt Charts (visualizing job scheduling on machines)<br>- Metric Comparison Line Charts (e.g., Diversity, Hypervolume)<br>- Scatter Plot (e.g., Makespan vs. Load Balance) |
+
+- Job scheduling solutions are in `log.txt`.
 
 [Back to Table of Contents](#table-of-contents)
 
@@ -169,6 +172,7 @@ visualization.py
 remove.py
 requirements.txt
 ```
+
 [Back to Table of Contents](#table-of-contents)
 
 ---

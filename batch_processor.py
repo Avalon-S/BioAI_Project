@@ -38,15 +38,7 @@ def process_all_files(input_folder, output_folder, dataset_name):
             # Read and parse data
             operation_data, processing_times, num_jobs, num_machines = read_and_parse_fjsp_file(file_path)
             avg_machines_per_operation = processing_times[np.isfinite(processing_times)].size / (num_jobs * processing_times.shape[1])
-
-            # Save log file
-            log_file_path = os.path.join(output_dir, "log.txt")
-            with open(log_file_path, "w") as log_file:
-                log_file.write(f"Dataset: {dataset_name}\n")
-                log_file.write(f"Jobs: {num_jobs}\n")
-                log_file.write(f"Machines: {num_machines}\n")
-                log_file.write(f"Avg Machines Per Operation: {avg_machines_per_operation:.2f}\n")
-
+            
             # Run standard NSGA-II
             print(f"  Running standard NSGA-II...")
             std_pop, std_archive, std_runtime = run_standard_nsga2(processing_times, POP_SIZE, N_GEN, SEED)
@@ -54,6 +46,32 @@ def process_all_files(input_folder, output_folder, dataset_name):
             # Run advanced NSGA-II
             print(f"  Running advanced NSGA-II...")
             adv_pop, adv_archive, adv_runtime = advanced_nsga2(processing_times, POP_SIZE, N_GEN, SEED)
+            
+            # Save log file
+            log_file_path = os.path.join(output_dir, "log.txt")
+            with open(log_file_path, "w") as log_file:
+                log_file.write(f"Dataset: {dataset_name}\n")
+                log_file.write(f"Jobs: {num_jobs}\n")
+                log_file.write(f"Machines: {num_machines}\n")
+                log_file.write(f"Avg Machines Per Operation: {avg_machines_per_operation:.2f}\n")
+                
+                log_file.write("\nStandard NSGA-II Results:\n")
+                for i, solution in enumerate(std_archive):
+                    makespan = solution.fitness[0]
+                    load_balance = solution.fitness[1]
+                    log_file.write(f"  Solution {i + 1}:\n")
+                    log_file.write(f"    Makespan: {makespan}\n")
+                    log_file.write(f"    Load Balance: {load_balance}\n")
+                    log_file.write(f"    Schedule: {solution.candidate}\n")
+
+                log_file.write("\nAdvanced NSGA-II Results:\n")
+                for i, solution in enumerate(adv_archive):
+                    makespan = solution.fitness[0]
+                    load_balance = solution.fitness[1]
+                    log_file.write(f"  Solution {i + 1}:\n")
+                    log_file.write(f"    Makespan: {makespan}\n")
+                    log_file.write(f"    Load Balance: {load_balance}\n")
+                    log_file.write(f"    Schedule: {solution.candidate}\n")
 
             # Calculate metrics
             reference_point = [
@@ -94,18 +112,33 @@ def process_all_files(input_folder, output_folder, dataset_name):
             print(f"  Saving standard NSGA-II scheduling visualizations...")
             if std_archive:
                 for i, solution in enumerate(std_archive):
-                    visualize_schedule(solution.candidate, processing_times, num_machines)
+                    makespan = solution.fitness[0]
+                    load_balance = solution.fitness[1]
+                    # print(solution) # Check the job scheduling
                     schedule_path = os.path.join(output_dir, f"std_schedule_{i + 1}.png")
-                    plt.savefig(schedule_path)
-                    plt.close()
+                    visualize_schedule(
+                        solution.candidate,
+                        processing_times,
+                        num_machines,
+                        makespan=makespan,
+                        load_balance=load_balance,
+                        save_path=schedule_path
+                    )
 
             print(f"  Saving advanced NSGA-II scheduling visualizations...")
             if adv_archive:
                 for i, solution in enumerate(adv_archive):
-                    visualize_schedule(solution.candidate, processing_times, num_machines)
+                    makespan = solution.fitness[0]
+                    load_balance = solution.fitness[1]
                     schedule_path = os.path.join(output_dir, f"adv_schedule_{i + 1}.png")
-                    plt.savefig(schedule_path)
-                    plt.close()
+                    visualize_schedule(
+                        solution.candidate,
+                        processing_times,
+                        num_machines,
+                        makespan=makespan,
+                        load_balance=load_balance,
+                        save_path=schedule_path
+                    )
 
             print(f"[{index}/{total_files}] File {filename} processed successfully.\n")
 
