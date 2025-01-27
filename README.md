@@ -83,6 +83,13 @@ The heuristic NSGA-II demonstrates better diversity compared to the standard ver
   <p><em>Heuristic NSGA-II Job Scheduling (Mk01)</em></p>
 </div>
 
+
+
+<div align="center">
+  <img src="result/Brandimarte/Mk01/comparison_nsga2_variants.png" alt="comparison_nsga2_variants.png" style="width:80%;"/>
+  <p><em>Comparison NSGA-II Variants (Mk01)</em></p>
+</div>
+
 <div align="center">
   <img src="result/Brandimarte/diversity_comparison.png" alt="diversity_comparison" style="width:80%;"/>
   <p><em>Diversity Comparison</em></p>
