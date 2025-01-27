@@ -18,7 +18,7 @@
 ---
 
 ## Introduction
-This project focuses on solving the **Flexible Job Shop Scheduling Problem (FJSP)** using a heuristic **NSGA-II** algorithm. FJSP is a well-known NP-hard problem that requires assigning operations to machines in a way that optimizes multiple conflicting objectives, such as minimizing makespan and balancing load across machines.
+This project focuses on solving the **Flexible Job Shop Scheduling Problem (FJSP)** using a heuristic **NSGA-II** algorithm. FJSP is a well-known NP-hard problem that requires assigning operations to machines in a way that optimizes multiple conflicting objectives, such as **minimizing makespan** and **balancing load** across machines.
 
 The proposed approach integrates heuristic strategies and traditional NSGA-II to improve the initial solution quality and exploration-exploitation balance. By addressing both global diversity and local optimization, this project aims to achieve a comprehensive Pareto front for multi-objective scheduling problems.
 
@@ -44,6 +44,8 @@ The proposed approach integrates heuristic strategies and traditional NSGA-II to
 1. Data Processing
 2. Running Algorithms
 3. Output results and visualization
+
+
 
 **Supported Features**
 

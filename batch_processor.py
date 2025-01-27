@@ -10,7 +10,7 @@ from visualization import visualize_schedule
 # Global random seed and parameters
 SEED = 43
 POP_SIZE = 50  # Population size for NSGA-II
-N_GEN = 100    # Number of generations
+N_GEN = 200    # Number of generations
 
 def process_all_files(input_folder, output_folder, dataset_name):
     """

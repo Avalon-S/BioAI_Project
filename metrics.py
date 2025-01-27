@@ -13,12 +13,3 @@ def diversity(population):
     distances = [distance.euclidean(population[i], population[i + 1])
                  for i in range(len(population) - 1)]
     return np.mean(distances)
-
-def coverage_indicator(A, B):
-    count = 0
-    for b in B:
-        for a in A:
-            if np.all(a <= b) and np.any(a < b):
-                count += 1
-                break
-    return count / len(B) if len(B) > 0 else 0
