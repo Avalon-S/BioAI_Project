@@ -130,7 +130,6 @@ python remove.py # Remove the result
 
 ```python
 BioAI_Project
-[__pycache__]
 [data]
    -[Barnes]
    -[Brandimarte]
