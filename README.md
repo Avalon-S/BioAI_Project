@@ -11,7 +11,7 @@
 4. [Results](#results)
 5. [Visualization](#visualization)
 6. [Usage](#usage)
-7. [Folders Structure](#folders-structure)
+7. [Folder Structure](#folder-structure)
 8. [License](#license)
 
 ---
@@ -133,7 +133,7 @@ python remove.py # Remove the result
 
 ---
 
-## Folders Structure
+## Folder Structure
 
 ```python
 BioAI_Project
