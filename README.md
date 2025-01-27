@@ -116,7 +116,7 @@ The heuristic NSGA-II demonstrates better diversity compared to the standard ver
 **Python**: `3.8.10`
 
 ```python
-git clone git@github.com:Avalon-S/BioAI_Project.git
+git clone https://github.com/Avalon-S/BioAI_Project.git
 ```
 
 ```python
