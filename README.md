@@ -151,9 +151,6 @@ BioAI_Project
    -   -[Mk02]
    -   -...
    -   -[Mk10]
-   -   -diversity_comparison.png
-   -   -hypervolume_comparison.png
-   -   -runtime_comparison.png
    -[Dauzere]
 data_processing.py
 main.py
