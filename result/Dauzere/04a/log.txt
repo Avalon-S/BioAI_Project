@@ -1,0 +1,4 @@
+Dataset: Dauzere
+Jobs: 10
+Machines: 5
+Avg Machines Per Operation: 0.88

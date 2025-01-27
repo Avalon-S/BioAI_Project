@@ -1,0 +1,11 @@
+Dataset: Brandimarte
+
+Standard NSGA-II:
+Runtime: 12.38475775718689
+Hypervolume: 825629.1905951281
+Diversity: 18.087921118877194
+
+Advanced NSGA-II:
+Runtime: 12.209625244140625
+Hypervolume: 1360893.9444077518
+Diversity: 28.20271785120966

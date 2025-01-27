@@ -1,0 +1,4 @@
+Dataset: Barnes
+Jobs: 15
+Machines: 13
+Avg Machines Per Operation: 1.30

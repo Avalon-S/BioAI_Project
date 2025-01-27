@@ -1,0 +1,4 @@
+Dataset: Brandimarte
+Jobs: 10
+Machines: 6
+Avg Machines Per Operation: 3.97
