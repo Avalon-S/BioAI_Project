@@ -96,13 +96,13 @@ The heuristic NSGA-II demonstrates better diversity compared to the standard ver
 </div>
 
 <div align="center">
-  <img src="result/Brandimarte/hypervolume_comparison.png" alt="hypervolume_comparison" style="width:80%;"/>
-  <p><em>Diversity Comparison</em></p>
+  <img src="result/Brandimarte/hypervolume_comparison.png" alt="hypervolume_comparison.png" style="width:80%;"/>
+  <p><em>Hypervolume Comparison</em></p>
 </div>
 
 <div align="center">
-  <img src="result/Brandimarte/runtime_comparison.png" alt="runtime_comparison" style="width:80%;"/>
-  <p><em>Diversity Comparison</em></p>
+  <img src="result/Brandimarte/runtime_comparison.png" alt="runtime_comparison.png" style="width:80%;"/>
+  <p><em>Runtime Comparison</em></p>
 </div>
 
 [Back to Table of Contents](#table-of-contents)
