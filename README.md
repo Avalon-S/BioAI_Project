@@ -159,6 +159,7 @@ BioAI_Project
    -   -[Mk10]
    -[Dauzere]
 data_processing.py
+batch_processor.py
 main.py
 metrics.py
 nsga2_algorithms.py
