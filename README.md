@@ -66,6 +66,11 @@ The heuristic NSGA-II demonstrates better diversity compared to the standard ver
 | **DIVERSIFIED_INIT_PROB** | - Higher initial solution quality<br>- Reduced randomness in early iterations | - Lower solution diversity<br>- May reduce exploration of diverse areas | - Higher solution diversity<br>- Improved exploration capabilities | - Lower initial solution quality |
 | **LOCAL_SEARCH_PROB**    | - Improved local solution quality<br>- Pushes solutions towards Pareto front | - Lower solution diversity<br>- Higher computational cost<br>- May lead to overfitting local areas | - Higher diversity<br>- Better exploration of search space | - Lower global exploration<br>- May leave potential solutions unexplored |
 
+div align="center">
+  <img src="asset/running_output.jpg" alt="running_output.jpg" style="width:80%;"/>
+  <p><em>Running Output</em></p>
+</div>
+
 [Back to Table of Contents](#table-of-contents)
 
 ---
