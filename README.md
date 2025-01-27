@@ -118,7 +118,7 @@ git clone git@github.com:Avalon-S/BioAI_Project.git
 
 ```python
 cd BioAI_Project
-pip install -r requirements.txt
+pip install -r requirements.txt # Please check if you need before running
 ```
 
 ```python
