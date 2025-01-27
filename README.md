@@ -117,16 +117,15 @@ git clone git@github.com:Avalon-S/BioAI_Project.git
 ```
 
 ```python
-cd BioAI_Project
-pip install -r requirements.txt # Please check if you need before running
+pip install -r BioAI_Project/requirements.txt # Please check if you need before running
 ```
 
 ```python
-python main.py # Run everything (data preprocessing, algorithm running, visualization) with one click
+python BioAI_Project/main.py # Run everything (data preprocessing, algorithm running, visualization) with one click
 ```
 
 ```python
-python remove.py # Remove the result
+python BioAI_Project/remove.py # Remove the result and all .ipynb_checkpoints
 ```
 
 [Back to Table of Contents](#table-of-contents)
