@@ -6,7 +6,7 @@
 ## Table of Contents
 
 1. [Introduction](#introduction)
-2. [Overview of Algorithms Ideas](#overview-of-algorithms-ideas-and-implementation)
+2. [Overview of Algorithms Ideas](#overview-of-algorithms-ideas)
 3. [Experiment Platform](#experiment-platform)
 4. [Results](#results)
 5. [Visualization](#visualization)
