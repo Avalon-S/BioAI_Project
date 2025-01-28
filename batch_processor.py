@@ -98,8 +98,8 @@ def process_all_files(input_folder, output_folder, dataset_name):
 
             # Save comparison plot
             plt.figure(figsize=(10, 6))
-            plt.scatter(std_pop[:, 0], std_pop[:, 1], c="red", label="Standard NSGA-II")
-            plt.scatter(adv_pop[:, 0], adv_pop[:, 1], c="blue", label="Advanced NSGA-II")
+            plt.scatter(std_pop[:, 0], std_pop[:, 1], c="red", label="Standard NSGA-II", alpha=0.3)
+            plt.scatter(adv_pop[:, 0], adv_pop[:, 1], c="blue", label="Advanced NSGA-II", alpha=0.3)
             plt.xlabel("Makespan")
             plt.ylabel("Load Balance")
             plt.legend()
