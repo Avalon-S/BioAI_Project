@@ -15,11 +15,6 @@ N_GEN = 200    # Number of generations
 def process_all_files(input_folder, output_folder, dataset_name):
     """
     Process all .fjs files in the specified folder, run standard and advanced NSGA-II algorithms, and save results.
-
-    Args:
-        input_folder (str): Path to the folder containing .fjs files.
-        output_folder (str): Path to save the results.
-        dataset_name (str): Name of the dataset being processed.
     """
     all_files = [f for f in os.listdir(input_folder) if f.endswith(".fjs")]
     total_files = len(all_files)
@@ -97,9 +92,13 @@ def process_all_files(input_folder, output_folder, dataset_name):
                 metrics_file.write(f"Diversity: {adv_div}\n")
 
             # Save comparison plot
-            plt.figure(figsize=(10, 6))
+            pareto_std = np.array([ind.fitness for ind in std_archive])
+            pareto_adv = np.array([ind.fitness for ind in adv_archive])
+
             plt.scatter(std_pop[:, 0], std_pop[:, 1], c="red", label="Standard NSGA-II", alpha=0.3)
             plt.scatter(adv_pop[:, 0], adv_pop[:, 1], c="blue", label="Advanced NSGA-II", alpha=0.3)
+            plt.scatter(pareto_std[:, 0], pareto_std[:, 1], c="yellow", label="Pareto Front (Standard)", edgecolor="black")
+            plt.scatter(pareto_adv[:, 0], pareto_adv[:, 1], c="orange", label="Pareto Front (Advanced)", edgecolor="black")
             plt.xlabel("Makespan")
             plt.ylabel("Load Balance")
             plt.legend()

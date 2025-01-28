@@ -66,7 +66,7 @@ def run_standard_nsga2(processing_times, pop_size, n_gen, seed):
         generator=standard_generator,
         evaluator=standard_evaluator,
         pop_size=pop_size,
-        maximize=False,
+        maximize=False,    # The smaller (makespan, load_balance) the better
         max_generations=n_gen,
         processing_times=processing_times
     )
