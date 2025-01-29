@@ -1,11 +1,11 @@
 Dataset: Dauzere
 
 Standard NSGA-II:
-Runtime: 20.258463621139526
+Runtime: 20.065334796905518
 Hypervolume: 0.0
 Diversity: 7.3061224489795915
 
 Advanced NSGA-II:
-Runtime: 19.636741161346436
+Runtime: 19.730393171310425
 Hypervolume: 0.0
 Diversity: 8.878048780487806

@@ -97,8 +97,8 @@ def process_all_files(input_folder, output_folder, dataset_name):
 
             plt.scatter(std_pop[:, 0], std_pop[:, 1], c="red", label="Standard NSGA-II", alpha=0.3)
             plt.scatter(adv_pop[:, 0], adv_pop[:, 1], c="blue", label="Advanced NSGA-II", alpha=0.3)
-            plt.scatter(pareto_std[:, 0], pareto_std[:, 1], c="yellow", label="Pareto Front (Standard)", edgecolor="black")
-            plt.scatter(pareto_adv[:, 0], pareto_adv[:, 1], c="orange", label="Pareto Front (Advanced)", edgecolor="black")
+            plt.scatter(pareto_std[:, 0], pareto_std[:, 1], c="orange", label="Pareto Front (Standard)", edgecolor="black")
+            plt.scatter(pareto_adv[:, 0], pareto_adv[:, 1], c="green", label="Pareto Front (Advanced)", edgecolor="black")
             plt.xlabel("Makespan")
             plt.ylabel("Load Balance")
             plt.legend()
