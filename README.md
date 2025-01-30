@@ -2,6 +2,7 @@
 
 ## Heuristic NSGA-II for Flexible Job Shop Scheduling Problems
 
+[Report](asset/Bio_Report.pdf)
 ---
 
 ## Table of Contents
@@ -29,8 +30,7 @@ The proposed approach integrates heuristic strategies and traditional NSGA-II to
 ## Overview of Algorithms Ideas
 | **Feature**          | **Standard NSGA-II**                                     | **Heuristic NSGA-II**                                            |
 |-----------------------|---------------------------------------------------------|---------------------------------------------------------------------------|
-| **Initial Population** | Fully randomized solutions.                             | 10% heuristic-based solutions (shortest processing time) and 90% randomized solutions. |
-| **Local Search**       | Not applied.                                            | Applied with a 5% probability to refine solutions.                        |
+| **Initial Population** | Fully randomized solutions.                             | 10% heuristic-based solutions (shortest processing time) and 90% randomized solutions, with a 5% probability of local search (random perturbation).  |
 | **Diversity**          | Ensures high diversity due to random initialization.    | Balances diversity with higher-quality initial solutions.                 |
 | **Target Objectives**  | Equal emphasis on makespan and load balance.            | Focused on reducing makespan initially, then balancing load through evolution. |
 | **Use Case**           | Suitable for general exploration.                       | Best suited for scenarios requirin higher-quality initial solutions. |
@@ -45,7 +45,10 @@ The proposed approach integrates heuristic strategies and traditional NSGA-II to
 2. Running Algorithms
 3. Output results and visualization
 
-
+<div align="center">
+  <img src="asset/report_materials/data_description.png" alt="data_description.png" style="width:70%;"/>
+  <p><em>Dataset Structure</em></p>
+</div>
 
 **Supported Features**
 
