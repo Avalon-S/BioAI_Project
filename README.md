@@ -15,6 +15,7 @@
 6. [Usage](#usage)
 7. [Project Structure](#project-structure)
 8. [License](#license)
+9. [Citation](#citation)
 
 ---
 
@@ -190,3 +191,25 @@ This project is licensed under the MIT License. See the `LICENSE` file for detai
 
 ---
 
+## Citation
+
+### BibTeX
+```
+@misc{jiang2025bioailegacy,
+  title        = {Heuristic NSGA-II for Flexible Job Shop Scheduling Problems},
+  author       = {Yuhang Jiang},
+  year         = {2025},
+  publisher    = {GitHub},
+  howpublished = {\url{https://github.com/Avalon-S/BioAI_Project/tree/legacy_branch}},
+}
+
+```
+
+### IEEE
+```
+Y. Jiang, Heuristic NSGA-II for Flexible Job Shop Scheduling Problems, GitHub, 2025. [Online]. Available: https://github.com/Avalon-S/BioAI_Project/tree/legacy_branch
+```
+
+[Back to Table of Contents](#table-of-contents)
+
+---
