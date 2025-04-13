@@ -6,13 +6,18 @@
 
 ## Update Log
 **[12/04/2025]**
+
 ✅ 1. Fixed Gantt Chart drawing error and improved the visualization layout.
+
 ✅ 2. Replaced `inspyred` built in NSGA-II with a custom implementation for better flexibility and extensibility. 
+
 ✅ 3. Added progress bars to visualize generation progress and runtime.
 
 ⚠️ Note: 
-- Algorithum parameters (e.g., population size, number of generation) have not been re-tuned in this update. The results are intended for framework validation and visualization purposes only. 
-- The same set of parameters is applied to all benchmark datasets. User are encouraged to fine-tune them basd on the specific chararcteristics of each dataset.
+
+- Algorithm parameters (e.g., population size, number of generation) have not been re-tuned in this update. The results are intended for framework validation and visualization purposes only. 
+
+- The same set of parameters is applied to all benchmark datasets. User are encouraged to fine-tune them based on the specific characteristics of each dataset.
 
 ---
 
