@@ -1,11 +1,11 @@
 Dataset: Barnes
 
 Standard NSGA-II:
-Runtime: 16.11950182914734
-Hypervolume: 10311677.353541806
-Diversity: 126.34707721711058
+Runtime: 74.70863151550293
+Hypervolume: 0.0
+Diversity: 35.66650260088567
 
 Advanced NSGA-II:
-Runtime: 16.10177254676819
-Hypervolume: 10613230.808400022
-Diversity: 167.99155056908566
+Runtime: 75.68282675743103
+Hypervolume: 0.0
+Diversity: 39.30594164179237

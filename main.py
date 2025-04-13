@@ -5,6 +5,7 @@ import os
 if __name__ == "__main__":
     # List of dataset names
     datasets = ["Barnes", "Brandimarte", "Dauzere"]
+    # datasets = ["Brandimarte"]
     
     # Base paths for input and output folders
     base_input_folder = "BioAI_Project/data"

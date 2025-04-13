@@ -2,7 +2,18 @@
 
 ## Heuristic NSGA-II for Flexible Job Shop Scheduling Problems
 
-[Report](asset/Bio_Report.pdf)
+---
+
+## Update Log
+**[12/04/2025]**
+✅ 1. Fixed Gantt Chart drawing error and improved the visualization layout.
+✅ 2. Replaced `inspyred` built in NSGA-II with a custom implementation for better flexibility and extensibility. 
+✅ 3. Added progress bars to visualize generation progress and runtime.
+
+⚠️ Note: 
+- Algorithum parameters (e.g., population size, number of generation) have not been re-tuned in this update. The results are intended for framework validation and visualization purposes only. 
+- The same set of parameters is applied to all benchmark datasets. User are encouraged to fine-tune them basd on the specific chararcteristics of each dataset.
+
 ---
 
 ## Table of Contents
@@ -76,7 +87,7 @@ The heuristic NSGA-II demonstrates better diversity compared to the standard ver
 | **LOCAL_SEARCH_PROB**    | - Improved local solution quality<br>- Pushes solutions towards Pareto front | - Lower solution diversity<br>- Higher computational cost<br>- May lead to overfitting local areas | - Higher diversity<br>- Better exploration of search space | -  Lower chance to refine local optima |
 
 <div align="center">
-  <img src="asset/running_output.jpg" alt="running_output.jpg" style="width:70%;"/>
+  <img src="asset/running_output.png" alt="running_output.png" style="width:100%;"/>
   <p><em>Running Output</em></p>
 </div>
 
@@ -88,12 +99,12 @@ The heuristic NSGA-II demonstrates better diversity compared to the standard ver
 **Brandimarte Dataset** (case)
 
 <div align="center">
-  <img src="result/Brandimarte/Mk01/std_schedule_1.png" alt="std_schedule_1.png" style="width:80%;"/>
+  <img src="asset/Standard NSGA-II Job Scheduling (Mk01).gif" alt="Standard NSGA-II Job Scheduling (Mk01).gif" style="width:80%;"/>
   <p><em>Standard NSGA-II Job Scheduling (Mk01)</em></p>
 </div>
 
 <div align="center">
-  <img src="result/Brandimarte/Mk01/adv_schedule_1.png" alt="adv_schedule_1.png" style="width:80%;"/>
+  <img src="asset/Heuristic NSGA-II Job Scheduling (Mk01).gif" alt="Heuristic NSGA-II Job Scheduling (Mk01).gif" style="width:80%;"/>
   <p><em>Heuristic NSGA-II Job Scheduling (Mk01)</em></p>
 </div>
 

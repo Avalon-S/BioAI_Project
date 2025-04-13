@@ -1,154 +1,233 @@
 import time
 import numpy as np
 import random
-from inspyred.ec.emo import NSGA2
-from inspyred.ec import terminators
+import os
+from tqdm import tqdm
 
-# ========== Global Parameters for Probability Adjustment ==========
-DIVERSIFIED_INIT_PROB = 0.1  # Probability of heuristic generation
-LOCAL_SEARCH_PROB = 0.05      # Probability of applying local search
+# ========== Global Parameters ==========
+DIVERSIFIED_INIT_PROB = 0.1     # Initial solution heuristic generation probability
+LOCAL_SEARCH_PROB = 0.05        # Local search probability
 
-# ========== Common Generator and Evaluator ==========
-def standard_generator(random, args):
+MUTATION_PROB = 0.5             # Mutation probability
+CROSSOVER_PROB = 0.9            # Crossover probability
+MUTATION_DECAY = 0.99           # Reduce the probability of mutation each generation
+
+# ========== Solution Representation ==========
+class SimpleSolution:
+    def __init__(self, candidate, fitness):
+        self.candidate = candidate  # Scheduling plan (2D list)
+        self.fitness = fitness      # [makespan, load balance]
+
+# ========== Generator & Evaluator ==========
+def standard_generator(rnd, args):
     """
     Standard NSGA-II generator: Randomly assign a machine to each operation of each job.
     """
     p_times = args["processing_times"]
-    num_jobs, num_operations, num_machines = p_times.shape
+    num_jobs, num_ops, num_machines = p_times.shape
     solution = []
     for job_idx in range(num_jobs):
         job_schedule = []
-        for op_idx in range(num_operations):
-            available_machines = np.where(np.isfinite(p_times[job_idx, op_idx]))[0]
-            if len(available_machines) > 0:
-                machine_idx = random.choice(available_machines)
-                job_schedule.append(machine_idx)
+        for op_idx in range(num_ops):
+            available = np.where(np.isfinite(p_times[job_idx, op_idx]))[0] # Available machines
+            if len(available) > 0:
+                machine = rnd.choice(available)  # Randomly select an available machine
+                job_schedule.append(machine)
         solution.append(job_schedule)
     return solution
 
+def heuristic_generator(p_times):
+    """
+    Heuristic generator: Assign the machine with the shortest processing time for each operation.
+    """
+    num_jobs, num_ops, _ = p_times.shape
+    solution = []
+    for job_idx in range(num_jobs):
+        job_schedule = []
+        for op_idx in range(num_ops):
+            available = np.where(np.isfinite(p_times[job_idx, op_idx]))[0]
+            if len(available) > 0:
+                best_machine = available[np.argmin(p_times[job_idx, op_idx, available])] # Choose the shortest time in availible machines.
+                job_schedule.append(best_machine)
+        solution.append(job_schedule)
+    return solution
 
-def standard_evaluator(candidates, args):
+def local_search(solution, p_times):  # Used as both random perturbation and a mutation operator.
+    """
+    Local search: Randomly select an operation and reassign a machine.
+    """
+    # Randomly select a process --> If the process can be processed on multiple machines --> Randomly choose a new availible machine.
+    new_solution = [row.copy() for row in solution]
+    job_idx = np.random.randint(0, len(solution))
+    op_idx = np.random.randint(0, len(solution[job_idx]))
+    current_machine = new_solution[job_idx][op_idx]
+    available = np.where(np.isfinite(p_times[job_idx, op_idx]))[0]
+    if len(available) > 1:
+        choices = available[available != current_machine]
+        new_solution[job_idx][op_idx] = np.random.choice(choices)
+    return new_solution
+
+def crossover_one_point(p1, p2, rnd):
+    child = []
+    for j_ops1, j_ops2 in zip(p1, p2):
+        point = rnd.randint(1, len(j_ops1) - 1)
+        new_job = j_ops1[:point] + j_ops2[point:]
+        child.append(new_job)
+    return child
+
+def standard_evaluator(population, args):
     """
     Standard NSGA-II evaluator: Calculate the objectives (Makespan and Load Balance) for each candidate solution.
     """
     p_times = args["processing_times"]
     fits = []
-    for c in candidates:
-        machine_times = np.zeros(p_times.shape[2])  # Total processing time for each machine
-        job_end_times = np.zeros(p_times.shape[0])  # Completion time for each job
-
-        for job_idx, job_schedule in enumerate(c):
+    for sol in population:
+        machine_times = np.zeros(p_times.shape[2])
+        job_end = np.zeros(p_times.shape[0])
+        for job_idx, job_schedule in enumerate(sol):
             start_time = 0
-            for op_idx, machine_idx in enumerate(job_schedule):
-                op_time = p_times[job_idx, op_idx, machine_idx]
-                if np.isfinite(op_time):
-                    start_time = max(start_time, machine_times[machine_idx])
-                    machine_times[machine_idx] = start_time + op_time
-                    start_time += op_time
-            job_end_times[job_idx] = start_time
-
-        makespan = max(job_end_times)  # The longest job completion time
-        load_balance = np.std(machine_times)  # Standard deviation of machine loads
+            for op_idx, machine in enumerate(job_schedule):
+                duration = p_times[job_idx, op_idx, machine]
+                if np.isfinite(duration):
+                    start_time = max(start_time, machine_times[machine])
+                    machine_times[machine] = start_time + duration
+                    start_time += duration
+            job_end[job_idx] = start_time
+        makespan = max(job_end)
+        load_balance = np.std(machine_times)
         fits.append((makespan, load_balance))
     return fits
 
-# ========== Standard NSGA-II ==========
-def run_standard_nsga2(processing_times, pop_size, n_gen, seed):
-    """
-    Standard NSGA-II implementation
-    """
+# ========== NSGA-II Core ==========
+def dominates(ind1, ind2):
+    ind1, ind2 = np.array(ind1), np.array(ind2)
+    return np.all(ind1 <= ind2) and np.any(ind1 < ind2)
+
+def non_dominated_sorting(fitness):
+    pop_size = len(fitness)
+    fronts = [[]]
+    domination_count = np.zeros(pop_size)
+    dominates_set = [[] for _ in range(pop_size)]
+    rank = np.zeros(pop_size)
+
+    for p in range(pop_size):
+        for q in range(pop_size):
+            if p == q: continue
+            if dominates(fitness[p], fitness[q]):
+                dominates_set[p].append(q)
+            elif dominates(fitness[q], fitness[p]):
+                domination_count[p] += 1
+        if domination_count[p] == 0:
+            fronts[0].append(p)
+
+    i = 0
+    while fronts[i]:
+        next_front = []
+        for p in fronts[i]:
+            for q in dominates_set[p]:
+                domination_count[q] -= 1
+                if domination_count[q] == 0:
+                    next_front.append(q)
+        i += 1
+        fronts.append(next_front)
+    return fronts[:-1], rank
+
+def calculate_crowding_distance(front, fitness):
+    d = np.zeros(len(front))
+    for m in range(fitness.shape[1]):
+        idx = np.argsort(fitness[front, m])
+        d[idx[0]] = d[idx[-1]] = np.inf  # Boundary solution priority
+        min_v, max_v = fitness[front, m][idx[0]], fitness[front, m][idx[-1]]
+        if max_v == min_v: continue
+        for i in range(1, len(front) - 1):
+            d[idx[i]] += (fitness[front, m][idx[i + 1]] - fitness[front, m][idx[i - 1]]) / (max_v - min_v)
+    return d
+
+# ========== Main Evolution ==========
+def evolve_nsga2(generator_fn, evaluator_fn, p_times, pop_size, n_gen, seed):
+    random.seed(seed)
+    np.random.seed(seed)
+    os.environ["PYTHONHASHSEED"] = str(seed)
     rnd = random.Random(seed)
-    ea = NSGA2(rnd)
-    ea.terminator = terminators.generation_termination
-
+    args = {"processing_times": p_times}
+    mutation_prob = MUTATION_PROB
+    
     start_time = time.time()
-    final_pop = ea.evolve(
-        generator=standard_generator,
-        evaluator=standard_evaluator,
-        pop_size=pop_size,
-        maximize=False,    # The smaller (makespan, load_balance) the better
-        max_generations=n_gen,
-        processing_times=processing_times
-    )
-    runtime = time.time() - start_time
-    return np.array([ind.fitness for ind in final_pop]), ea.archive, runtime
+    
+    population = [generator_fn(rnd, args) for _ in range(pop_size)] # Generate parents
+    fitness = evaluator_fn(population, args)
+    
+    for _ in tqdm(range(n_gen), desc="NSGA-II Evolving"):
+        # ========== Step 1: Create children ==========
+        children = []
+        while len(children) < pop_size:
+            p1, p2 = rnd.sample(population, 2)
+            if rnd.random() < CROSSOVER_PROB:
+                child = crossover_one_point(p1, p2, rnd)
+            else:
+                child = [op.copy() for op in p1]
+            if rnd.random() < mutation_prob:
+                child = local_search(child, p_times)
+            children.append(child)
 
-# ========== Improved NSGA-II ==========
-def advanced_nsga2(processing_times, pop_size, n_gen, seed):
-    """
-    Improved NSGA-II: Diversified initialization (controlled by DIVERSIFIED_INIT_PROB) + local search (controlled by LOCAL_SEARCH_PROB)
-    """
-    rnd = random.Random(seed)
-    ea = NSGA2(rnd)
-    ea.terminator = terminators.generation_termination
+        # ========== Step 2: Merge parents + children ==========
+        combined_population = population + children
+        combined_fitness = evaluator_fn(combined_population, args)
+        fitness_np = np.array(combined_fitness)
 
-    def diversified_generator(random, args):
-        """
-        Diversified initialization generator: Controlled by DIVERSIFIED_INIT_PROB
-        """
-        p_times = args["processing_times"]
-        if random.random() < DIVERSIFIED_INIT_PROB:
-            return heuristic_generator(p_times)  # Heuristic generation
-        else:
-            return standard_generator(random, args)  # Random generation
+        # ========== Step 3: Non-dominated sorting ==========
+        fronts, _ = non_dominated_sorting(combined_fitness)
 
-    def generator_with_local_search(random, args):
-        """
-        Generator with local search to further optimize the quality of solutions (controlled by LOCAL_SEARCH_PROB)
-        """
-        solution = diversified_generator(random, args)
-        if random.random() < LOCAL_SEARCH_PROB:
-            return local_search(solution, args["processing_times"])
-        return solution
+        # ========== Step 4: Elitism selection ==========
+        new_population = []
+        new_fitness = []
 
-    start_time = time.time()
-    final_pop = ea.evolve(
-        generator=generator_with_local_search,
-        evaluator=standard_evaluator,
-        pop_size=pop_size,
-        maximize=False,
-        max_generations=n_gen,
-        processing_times=processing_times
-    )
-    runtime = time.time() - start_time
-    return np.array([ind.fitness for ind in final_pop]), ea.archive, runtime
+        for front in fronts:
+            if len(new_population) + len(front) > pop_size:
+                distances = calculate_crowding_distance(front, fitness_np)
+                sorted_front = sorted(zip(front, distances), key=lambda x: x[1], reverse=True)
+                selected = sorted_front[:pop_size - len(new_population)]
+                new_population.extend([combined_population[idx] for idx, _ in selected])
+                new_fitness.extend([combined_fitness[idx] for idx, _ in selected])
+                break
+            else:
+                new_population.extend([combined_population[idx] for idx in front])
+                new_fitness.extend([combined_fitness[idx] for idx in front])
 
+        population = new_population
+        fitness = new_fitness
+        mutation_prob *= MUTATION_DECAY  # The probability of mutation decreases with each generation
 
-def heuristic_generator(processing_times):
-    """
-    Heuristic generator: Assign the machine with the shortest processing time for each operation.
-    """
-    num_jobs, num_operations, num_machines = processing_times.shape
-    solution = []
-    for job_idx in range(num_jobs):
-        job_schedule = []
-        for op_idx in range(num_operations):
-            available_machines = np.where(np.isfinite(processing_times[job_idx, op_idx]))[0]
-            if len(available_machines) > 0:
-                best_machine = available_machines[np.argmin(processing_times[job_idx, op_idx, available_machines])]
-                job_schedule.append(best_machine)
-        solution.append(job_schedule)
-    return solution
+    # ========== Step 5: Extract final Pareto front ==========
+    final_fitness = np.array(fitness)
+    pareto_front = non_dominated_sorting(final_fitness)[0][0]
+    archive = [SimpleSolution(population[i], tuple(final_fitness[i])) for i in pareto_front]
 
+    # Eliminate duplicate scheduling plans (candidate)
+    unique_archive = {}
+    for sol in archive:
+        key = tuple(map(tuple, sol.candidate))
+        if key not in unique_archive:
+            unique_archive[key] = sol
+    archive = list(unique_archive.values())
+    pareto_fitness = np.array([s.fitness for s in archive])
 
-def local_search(solution, processing_times):
-    """
-    Local search: Randomly select an operation and reassign a machine.
-    """
-    num_jobs = len(solution)
-    num_machines = processing_times.shape[2]
+    return pareto_fitness, archive, time.time() - start_time
 
-    # Randomly select a job and an operation
-    job_idx = np.random.randint(0, num_jobs)
-    op_idx = np.random.randint(0, len(solution[job_idx]))
+# ========== Wrapper API ==========
+def run_standard_nsga2(p_times, pop_size, n_gen, seed):
+    return evolve_nsga2(standard_generator, standard_evaluator, p_times, pop_size, n_gen, seed)
 
-    current_machine = solution[job_idx][op_idx]
-    available_machines = np.where(np.isfinite(processing_times[job_idx, op_idx]))[0]
+def advanced_nsga2(p_times, pop_size, n_gen, seed):
+    def mixed_generator(rnd, args):
+        if rnd.random() < DIVERSIFIED_INIT_PROB:
+            return heuristic_generator(args["processing_times"])
+        return standard_generator(rnd, args)
 
-    # If there are other available machines, randomly replace
-    if len(available_machines) > 1:
-        available_machines = available_machines[available_machines != current_machine]
-        new_machine = np.random.choice(available_machines)
-        solution[job_idx][op_idx] = new_machine
+    def generator_with_ls(rnd, args):
+        sol = mixed_generator(rnd, args)
+        if rnd.random() < LOCAL_SEARCH_PROB:
+            return local_search(sol, args["processing_times"])
+        return sol
 
-    return solution
+    return evolve_nsga2(generator_with_ls, standard_evaluator, p_times, pop_size, n_gen, seed)
