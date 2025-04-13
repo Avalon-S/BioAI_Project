@@ -17,7 +17,7 @@
 
 - Algorithm parameters (e.g., population size, number of generation) have not been re-tuned in this update. The results are intended for framework validation and visualization purposes only. 
 
-- The same set of parameters is applied to all benchmark datasets. User are encouraged to fine-tune them based on the specific characteristics of each dataset.
+- The same set of parameters is applied to all benchmark datasets. Users are encouraged to fine-tune them based on the specific characteristics of each dataset.
 
 ---
 
