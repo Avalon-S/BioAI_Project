@@ -104,12 +104,12 @@ The heuristic NSGA-II demonstrates better diversity compared to the standard ver
 **Brandimarte Dataset** (case)
 
 <div align="center">
-  <img src="asset/Standard NSGA-II Job Scheduling (Mk01).gif" alt="Standard NSGA-II Job Scheduling (Mk01).gif" style="width:80%;"/>
+  <img src="asset/Standard NSGA-II Job Scheduling (Mk01).gif" alt="Standard NSGA-II Job Scheduling (Mk01).gif" style="width:100%;"/>
   <p><em>Standard NSGA-II Job Scheduling (Mk01)</em></p>
 </div>
 
 <div align="center">
-  <img src="asset/Heuristic NSGA-II Job Scheduling (Mk01).gif" alt="Heuristic NSGA-II Job Scheduling (Mk01).gif" style="width:80%;"/>
+  <img src="asset/Heuristic NSGA-II Job Scheduling (Mk01).gif" alt="Heuristic NSGA-II Job Scheduling (Mk01).gif" style="width:100%;"/>
   <p><em>Heuristic NSGA-II Job Scheduling (Mk01)</em></p>
 </div>
 
