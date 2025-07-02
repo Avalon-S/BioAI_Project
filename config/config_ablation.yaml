@@ -1,0 +1,13 @@
+input: "data"
+output: "results/ablation_study"
+datasets:
+  - Brandimarte
+  - Barnes
+  - Dauzere
+algorithm:
+  - Advanced NSGA-II
+  - without Adaptive Crossover
+  - without Archive
+  - without Hybrid Init
+  - without kNN
+  - without Weight Schedule

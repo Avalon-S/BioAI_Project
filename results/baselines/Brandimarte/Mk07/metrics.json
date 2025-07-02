@@ -1,0 +1,27 @@
+{
+    "Standard NSGA-II": {
+        "runtime": 61.83391547203064,
+        "hypervolume": 17843939.825585168,
+        "diversity": 20.191755119066585
+    },
+    "Advanced NSGA-II": {
+        "runtime": 87.85683727264404,
+        "hypervolume": 7123550.383334637,
+        "diversity": 7.224799353673475
+    },
+    "Multiobjective ACO": {
+        "runtime": 1109.0903816223145,
+        "hypervolume": 0.0,
+        "diversity": 32.950169004641694
+    },
+    "NSGA-III": {
+        "runtime": 69.57035779953003,
+        "hypervolume": 6642692.961050463,
+        "diversity": 65.49094164636057
+    },
+    "SPEA-II": {
+        "runtime": 67.83732295036316,
+        "hypervolume": 5952262.029663373,
+        "diversity": 32.06243928401412
+    }
+}

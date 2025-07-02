@@ -1,0 +1,32 @@
+{
+    "Advanced NSGA-II": {
+        "runtime": 88.60215592384338,
+        "hypervolume": 1699945.719630032,
+        "diversity": 7.224799353673475
+    },
+    "without Adaptive Crossover": {
+        "runtime": 93.96084427833557,
+        "hypervolume": 1409637.2412705338,
+        "diversity": 1.5870340588608995
+    },
+    "without Archive": {
+        "runtime": 70.09235692024231,
+        "hypervolume": 1699945.7196300323,
+        "diversity": 6.600558734422097
+    },
+    "without Hybrid Init": {
+        "runtime": 98.84853196144104,
+        "hypervolume": 649556.8101952368,
+        "diversity": 15.142656699054239
+    },
+    "without kNN": {
+        "runtime": 88.83078122138977,
+        "hypervolume": 685665.9554659679,
+        "diversity": 379.2422184453837
+    },
+    "without Weight Schedule": {
+        "runtime": 83.32524681091309,
+        "hypervolume": 1281405.87933044,
+        "diversity": 7.0710678118654755
+    }
+}

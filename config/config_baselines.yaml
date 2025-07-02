@@ -1,0 +1,12 @@
+input: "data"
+output: "results/baselines"
+datasets:
+  - Brandimarte
+  - Barnes
+  - Dauzere
+algorithm:
+  - Standard NSGA-II
+  - Advanced NSGA-II
+  - Multiobjective ACO
+  - NSGA-III
+  - SPEA-II

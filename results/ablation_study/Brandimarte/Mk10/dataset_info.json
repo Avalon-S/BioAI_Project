@@ -1,0 +1,6 @@
+{
+    "dataset": "Brandimarte",
+    "jobs": 20,
+    "machines": 15,
+    "avg_machines_per_op": 2.56
+}
