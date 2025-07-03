@@ -59,6 +59,21 @@ After generating the offspring, their fitness is evaluated using three objective
 
 An external archive is maintained throughout to store high-quality non-dominated solutions. It is updated each generation and pruned using crowding distance if its size exceeds the maximum limit.
 
+**Core differences**
+
+ Different ways of considering space:
+- **Crowding distance:** Calculate on each target dimension separately and then sum
+- **kNN:** Calculate Euclidean distance directly in the entire multi-target space
+
+ Neighbor selection strategy:
+- **Crowding distance:** Only consider directly adjacent individuals on each target
+- **kNN:** Consider the k nearest neighbors in the entire target space
+
+ Diversity sensitivity:
+- **Crowding distance:** Give infinite values ​​to boundary individuals, and intermediate individuals are based on adjacent distances
+- **kNN:** All individuals are based on their local density, and the farther the distance, the higher the score
+
+
 This modular design allows the algorithm to integrate multiple heuristics while maintaining flexibility in selection and replacement strategies. It is particularly aimed at enhancing solution diversity and incorporating practical scheduling heuristics into the NSGA-II framework.
 
 [Back to Table of Contents](#table-of-contents)
