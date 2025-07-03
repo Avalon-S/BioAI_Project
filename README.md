@@ -178,7 +178,7 @@ This project is licensed under the MIT License. See the `LICENSE` file for detai
 
 ### BibTeX
 ```
-@misc{jiang2025bioailegacy,
+@misc{jiang2025bioai,
   title        = {kDEN-NSGA-II: kNN-Density Enhanced NSGA-II with Adaptive Operators for Flexible Job-Shop Scheduling},
   author       = {Yuhang Jiang},
   year         = {2025},
