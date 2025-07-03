@@ -2,6 +2,8 @@
 
 ## kDEN-NSGA-II: kNN-Density Enhanced NSGA-II with Adaptive Operators for Flexible Job-Shop Scheduling
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Avalon-S/BioAI_Project)
+
 ---
 
 ## Statement
