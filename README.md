@@ -129,7 +129,7 @@ This modular design allows the algorithm to integrate multiple heuristics while 
 
 <div align="center">
   <img src="asset/Advanced_NSGA-II_schedule.gif" alt="adv_schedule_1.png" style="width:80%;"/>
-  <p><em>Heuristic NSGA-II Job Scheduling (Mk01)</em></p>
+  <p><em>kDEN-NSGA-II Job Scheduling (Mk01)</em></p>
 </div>
 
 <div align="center">
