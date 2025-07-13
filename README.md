@@ -160,7 +160,7 @@ This modular design allows the algorithm to integrate multiple heuristics while 
 **Python**: `3.8.10`
 
 ```python
-git clone  https://github.com/Avalon-S/BioAI_Project.git
+git clone https://github.com/Avalon-S/BioAI_Project.git
 cd BioAI_Project
 ```
 
